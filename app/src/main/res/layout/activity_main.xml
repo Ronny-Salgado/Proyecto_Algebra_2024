@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnSumResMulMatrices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suma, Resta y Multiplicación de Matrices"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <Button
+        android:id="@+id/btnCalcularInversa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matriz inversa con Gauss-Jordan"
+        android:layout_below="@+id/btnSumResMulMatrices"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btnVectorOperations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Operaciones con Vectores"
+        android:layout_below="@+id/btnCalcularInversa"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btnLineOperations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Operaciones con Rectas"
+        android:layout_below="@id/btnVectorOperations"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btnSolveEquations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resolver Sistemas de Ecuaciones"
+        android:layout_below="@id/btnLineOperations"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+
+
+
+</RelativeLayout>

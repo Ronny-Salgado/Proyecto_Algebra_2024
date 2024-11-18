@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Inputs para las matrices -->
+    <TextView
+        android:id="@+id/tvMatrixA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matriz A"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/etMatrixA"
+        android:layout_width="match_parent"
+        android:layout_height="106dp"
+        android:hint="Ingrese la matriz A (Ej: 1,2;3,4)" />
+
+    <TextView
+        android:id="@+id/tvMatrixB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matriz B"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/etMatrixB"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:hint="Ingrese la matriz B (Ej: 5,6;7,8) o un numero si desea multiplicar por escalar" />
+
+    <!-- Botones para seleccionar operaciones -->
+
+    <!-- Área de resultados -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Sumar" />
+
+        <Button
+            android:id="@+id/btnSubtract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_below="@id/btnSum"
+            android:text="Restar" />
+
+        <Button
+            android:id="@+id/btnMultiply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="37dp"
+            android:layout_below="@id/btnSubtract"
+            android:text="Multiplicar" />
+
+        <Button
+            android:id="@+id/btnEscalar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnMultiply"
+            android:layout_centerHorizontal="true"
+            android:text="multiplicar por escalar" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resultado:"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/tvMatrixResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEEEEE"
+        android:padding="8dp"/>
+</LinearLayout>
+
+
