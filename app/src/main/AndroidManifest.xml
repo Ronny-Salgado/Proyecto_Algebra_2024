@@ -24,6 +24,9 @@
         </activity>
         <activity android:name=".SRMmatricesActivity" android:exported="true"></activity>
         <activity android:name=".MatrizInversaActivity" android:exported="true"></activity>
+        <!-- llamo la logica -->
+
+        <activity android:name=".VectorsActivity" android:exported="true" />
 
     </application>
 

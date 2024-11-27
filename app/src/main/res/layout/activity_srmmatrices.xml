@@ -20,6 +20,10 @@
         android:layout_height="106dp"
         android:hint="Ingrese la matriz A (Ej: 1,2;3,4)" />
 
+
+
+
+
     <TextView
         android:id="@+id/tvMatrixB"
         android:layout_width="wrap_content"
