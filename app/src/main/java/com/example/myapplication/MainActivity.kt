@@ -27,18 +27,18 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        Botón para operaciones con matrices
-//        val btnMatrixOperations = findViewById<Button>(R.id.btnMatrixOperations)
-//        btnMatrixOperations.setOnClickListener {
-//            val intent = Intent(this, MatrixOperationsActivity::class.java)
-//            startActivity(intent)
-//        }
-
-//        // Botón para operaciones con vectores
-        val btnVectorOperations = findViewById<Button>(R.id.btnVectorOperations)
-        btnVectorOperations.setOnClickListener {
-            val intent = Intent(this, VectorsActivity::class.java)
+        val btnMatrixOperations = findViewById<Button>(R.id.btnMatrixOperations)
+        btnMatrixOperations.setOnClickListener {
+            val intent = Intent(this, MatrixOperationsActivity::class.java)
             startActivity(intent)
         }
+
+//        // Botón para operaciones con vectores
+//        val btnVectorOperations = findViewById<Button>(R.id.btnVectorOperations)
+//        btnVectorOperations.setOnClickListener {
+//            val intent = Intent(this, VectorOperationsActivity::class.java)
+//            startActivity(intent)
+//        }
 //
 //        // Botón para operaciones con rectas
 //        val btnLineOperations = findViewById<Button>(R.id.btnLineOperations)
