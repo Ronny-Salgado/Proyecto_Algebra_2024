@@ -1,102 +1,358 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true">
 
-    <!-- Inputs para las matrices -->
-    <TextView
-        android:id="@+id/tvMatrixA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Matriz A"
-        android:textStyle="bold"/>
-
-    <EditText
-        android:id="@+id/etMatrixA"
-        android:layout_width="match_parent"
-        android:layout_height="106dp"
-        android:hint="Ingrese la matriz A (Ej: 1,2;3,4)" />
-
-
-
-
-
-    <TextView
-        android:id="@+id/tvMatrixB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Matriz B"
-        android:textStyle="bold"/>
-
-    <EditText
-        android:id="@+id/etMatrixB"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:hint="Ingrese la matriz B (Ej: 5,6;7,8) o un numero si desea multiplicar por escalar" />
-
-    <!-- Botones para seleccionar operaciones -->
-
-    <!-- Área de resultados -->
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnSum"
+        <!-- Título -->
+
+        <!-- Inputs para la Matriz A -->
+
+        <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Sumar" />
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Agregar Matrices"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnSubtract"
+        <TextView
+            android:id="@+id/tvMatrixA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="8dp"
-            android:layout_below="@id/btnSum"
-            android:text="Restar" />
+            android:text="Matriz A"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
 
-        <Button
-            android:id="@+id/btnMultiply"
+        <!-- LinearLayouts para los inputs de Matriz A 5x5 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etA00"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A00"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA01"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A01"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA02"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A02"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA03"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A03"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA04"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A04"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etA10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A10"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A11"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A12"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A13"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A14"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etA20"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A20"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA21"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A21"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA22"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A22"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA23"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A23"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA24"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A24"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etA30"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A30"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA31"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A31"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA32"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A32"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA33"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A33"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA34"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A34"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etA40"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A40"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA41"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A41"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA42"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A42"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA43"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A43"
+                android:inputType="numberSigned" />
+
+            <EditText
+                android:id="@+id/etA44"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="A44"
+                android:inputType="numberSigned" />
+        </LinearLayout>
+
+        <!-- Inputs para la Matriz B (Escalar) -->
+        <TextView
+            android:id="@+id/tvMatrixB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="37dp"
-            android:layout_below="@id/btnSubtract"
-            android:text="Multiplicar" />
+            android:text="Escalar"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
 
+        <EditText
+            android:id="@+id/etMatrixB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese un número" />
+
+        <!-- Botón para agregar matrices -->
         <Button
-            android:id="@+id/btnEscalar"
+            android:id="@+id/btnAddMatrix"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btnMultiply"
-            android:layout_centerHorizontal="true"
-            android:text="multiplicar por escalar" />
-    </RelativeLayout>
+            android:layout_marginTop="16dp"
+            android:text="Agregar Matriz" />
 
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Resultado:"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
+        <!-- RecyclerView para mostrar matrices -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMatrices"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/tvMatrixResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#EEEEEE"
-        android:padding="8dp"/>
-</LinearLayout>
+        <!-- Botones para seleccionar operaciones -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btnSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Sumar" />
+
+            <Button
+                android:id="@+id/btnSubtract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_below="@id/btnSum"
+                android:text="Restar" />
+
+            <Button
+                android:id="@+id/btnMultiply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="37dp"
+                android:layout_below="@id/btnSubtract"
+                android:text="Multiplicar" />
+
+            <Button
+                android:id="@+id/btnEscalar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnMultiply"
+                android:layout_centerHorizontal="true"
+                android:text="Multiplicar por Escalar" />
+        </RelativeLayout>
+
+        <!-- Área de resultados -->
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resultado:"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/tvMatrixResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEEEEE"
+            android:padding="8dp"/>
+
+    </LinearLayout>
+</ScrollView>
 
