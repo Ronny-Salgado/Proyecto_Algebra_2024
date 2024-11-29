@@ -3,13 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:paddingBottom="16dp"
+    android:paddingTop="0dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="50dp">
 
         <!-- Título -->
 
@@ -17,8 +20,8 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Agregar Matrices"
@@ -27,11 +30,12 @@
 
         <TextView
             android:id="@+id/tvMatrixA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Matriz A"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:baselineAligned="false"
+            android:text="Matriz"
+            android:textStyle="bold" />
 
         <!-- LinearLayouts para los inputs de Matriz A 5x5 -->
         <LinearLayout
@@ -269,9 +273,9 @@
             android:id="@+id/tvMatrixB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Escalar"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etMatrixB"
@@ -287,18 +291,21 @@
             android:layout_marginTop="16dp"
             android:text="Agregar Matriz" />
 
-        <!-- RecyclerView para mostrar matrices -->
+
+        <!-- Botones para seleccionar operaciones -->
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMatrices"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="16dp"/>
+            android:layout_height="203dp"
+            android:layout_marginTop="16dp" />
 
-        <!-- Botones para seleccionar operaciones -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="16dp"
+            android:baselineAligned="false"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -313,19 +320,19 @@
                 android:id="@+id/btnSubtract"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/btnSum"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
-                android:layout_below="@id/btnSum"
                 android:text="Restar" />
 
             <Button
                 android:id="@+id/btnMultiply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/btnSubtract"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="37dp"
-                android:layout_below="@id/btnSubtract"
                 android:text="Multiplicar" />
 
             <Button
@@ -342,17 +349,16 @@
             android:id="@+id/tvResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Resultado:"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvMatrixResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#EEEEEE"
-            android:padding="8dp"/>
+            android:padding="8dp" />
 
     </LinearLayout>
 </ScrollView>
-

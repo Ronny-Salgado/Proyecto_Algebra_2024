@@ -173,22 +173,22 @@ class SRMmatricesActivity : AppCompatActivity() {
             null
         }
     }
-// Fin de las funciones previas
+    // Fin de las funciones previas
 // Funciones de operaciones básicas con pasos
-private fun sumMatrices(a: Array<Array<Int>>, b: Array<Array<Int>>): Pair<Array<Array<String>>, Array<Array<Int>>> {
-    val rows = a.size
-    val cols = a[0].size
-    val operationSteps = Array(rows) { Array(cols) { "" } }
-    val resultMatrix = Array(rows) { Array(cols) { 0 } }
-    for (i in 0 until rows) {
-        for (j in 0 until cols) {
-            val step = "${a[i][j]} + ${b[i][j]}"
-            operationSteps[i][j] = step
-            resultMatrix[i][j] = a[i][j] + b[i][j]
+    private fun sumMatrices(a: Array<Array<Int>>, b: Array<Array<Int>>): Pair<Array<Array<String>>, Array<Array<Int>>> {
+        val rows = a.size
+        val cols = a[0].size
+        val operationSteps = Array(rows) { Array(cols) { "" } }
+        val resultMatrix = Array(rows) { Array(cols) { 0 } }
+        for (i in 0 until rows) {
+            for (j in 0 until cols) {
+                val step = "${a[i][j]} + ${b[i][j]}"
+                operationSteps[i][j] = step
+                resultMatrix[i][j] = a[i][j] + b[i][j]
+            }
         }
+        return Pair(operationSteps, resultMatrix)
     }
-    return Pair(operationSteps, resultMatrix)
-}
 
     private fun subtractMatrices(a: Array<Array<Int>>, b: Array<Array<Int>>): Pair<Array<Array<String>>, Array<Array<Int>>> {
         val rows = a.size
