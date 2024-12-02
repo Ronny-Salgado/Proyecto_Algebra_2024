@@ -13,27 +13,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Botón para operaciones con matrices: Sume, Resta Y multiplicación
+        //Botón para operaciones con matrices: Sume, Resta , multiplicación y inversa
         val btnMatrixOperations1 = findViewById<Button>(R.id.btnSumResMulMatrices)
         btnMatrixOperations1.setOnClickListener {
             val intent = Intent(this, SRMmatricesActivity::class.java)
             startActivity(intent)
         }
 
-
-        //Botón para operaciones con matrices
-        val btnMatrixOperations2 = findViewById<Button>(R.id.btnCalcularInversa)
-        btnMatrixOperations2.setOnClickListener {
-            val intent = Intent(this, MatrizInversaActivity::class.java)
+        // Botón para resolver sistemas de ecuaciones
+        val btnSolveEquations = findViewById<Button>(R.id.btnEcuaciones)
+        btnSolveEquations.setOnClickListener {
+            val intent = Intent(this, SEcuacionesActivity::class.java)
             startActivity(intent)
         }
-
-//        Botón para operaciones con matrices
-/*        val btnMatrixOperations = findViewById<Button>(R.id.btnMatrixOperations)
-        btnMatrixOperations.setOnClickListener {
-            val intent = Intent(this, MatrixOperationsActivity::class.java)
-            startActivity(intent)
-        }*/
 
 //        // Botón para operaciones con vectores
         val btnVectorOperations = findViewById<Button>(R.id.btnVectorOperations)
@@ -49,11 +41,6 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(intent)
 //        }
 //
-//        // Botón para resolver sistemas de ecuaciones
-        val btnSolveEquations = findViewById<Button>(R.id.btnEcuaciones)
-        btnSolveEquations.setOnClickListener {
-            val intent = Intent(this, SEcuacionesActivity::class.java)
-            startActivity(intent)
-        }
+//
     }
 }

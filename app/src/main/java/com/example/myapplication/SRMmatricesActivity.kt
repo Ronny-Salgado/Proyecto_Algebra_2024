@@ -34,6 +34,7 @@ class SRMmatricesActivity : AppCompatActivity() {
         val btnSubtract = findViewById<Button>(R.id.btnSubtract)
         val btnMultiply = findViewById<Button>(R.id.btnMultiply)
         val btnEscalar = findViewById<Button>(R.id.btnEscalar)
+        val btnInversa = findViewById<Button>(R.id.btnInversa)
 
         // Configurar RecyclerView
         val rvMatrices = findViewById<RecyclerView>(R.id.rvMatrices)
@@ -125,6 +126,27 @@ class SRMmatricesActivity : AppCompatActivity() {
                 tvMatrixResult.text = "Error: Seleccione una matriz o entrada de escalar no válida"
             }
         }
+        // Botón para calcular la inversa
+        btnInversa.setOnClickListener {
+            val selectedMatrices = matrixAdapter.getSelectedMatrices()
+            if (selectedMatrices.size == 1) {
+                val matrix = selectedMatrices[0]
+                if (matrix.size == matrix[0].size) { // Verifica si es cuadrada
+                    val pasos = mutableListOf<String>()
+                    val inversa = calcularInversa(matrix.map { it.map { it.toDouble() }.toTypedArray() }.toTypedArray(), pasos)
+                    if (inversa != null) {
+                        pasos.add(0, "Matriz Original:\n${formatMatrix(matrix)}")
+                        tvMatrixResult.text = pasos.joinToString("\n") + "\n\nMatriz Inversa:\n" + inversa.joinToString("\n") { row -> row.joinToString(" | ") { "%.2f".format(it) } }
+                    } else {
+                        tvMatrixResult.text = "No se puede calcular la inversa"
+                    }
+                } else {
+                    tvMatrixResult.text = "Error: Matriz no cuadrada"
+                }
+            } else {
+                tvMatrixResult.text = "Seleccione una sola matriz para calcular su inversa"
+            }
+        }
     }
 
     // Función para leer la entrada de la matriz A desde los EditTexts
@@ -173,7 +195,7 @@ class SRMmatricesActivity : AppCompatActivity() {
             null
         }
     }
-    // Fin de las funciones previas
+
 // Funciones de operaciones básicas con pasos
     private fun sumMatrices(a: Array<Array<Int>>, b: Array<Array<Int>>): Pair<Array<Array<String>>, Array<Array<Int>>> {
         val rows = a.size
@@ -239,6 +261,65 @@ class SRMmatricesActivity : AppCompatActivity() {
         }
         return Pair(operationSteps, resultMatrix)
     }
+
+    // Función para calcular la inversa utilizando Gauss-Jordan con pasos detallados
+    private fun calcularInversa(matrix: Array<Array<Double>>, pasos: MutableList<String>): Array<Array<Double>>? {
+        val n = matrix.size
+        // Crear matriz aumentada
+        val matrizAumentada = Array(n) { i -> Array(2 * n) { j -> if (j < n) matrix[i][j] else if (j == n + i) 1.0 else 0.0 } }
+
+        pasos.add("Matriz aumentada inicial:\n${formatearMatriz(matrizAumentada)} \n")
+
+        for (i in 0 until n) {
+            // Verificar y corregir si el elemento diagonal es 0
+            if (matrizAumentada[i][i] == 0.0) {
+                var encontrado = false
+                for (j in i + 1 until n) {
+                    if (matrizAumentada[j][i] != 0.0) {
+                        val temp = matrizAumentada[i]
+                        matrizAumentada[i] = matrizAumentada[j]
+                        matrizAumentada[j] = temp
+                        pasos.add("F ${i + 1} <-> ${j + 1}:\n${formatearMatriz(matrizAumentada)} \n")
+                        encontrado = true
+                        break
+                    }
+                }
+                if (!encontrado) return null // No se puede calcular la inversa
+            }
+
+            // Normalizar la fila para que el elemento diagonal sea 1
+            val elementoDiagonal = matrizAumentada[i][i]
+            for (j in 0 until 2 * n) matrizAumentada[i][j] /= elementoDiagonal
+            pasos.add(
+                "F ${i + 1} / ${"%.2f".format(elementoDiagonal)}:\n${formatearMatriz(matrizAumentada)} \n"
+            )
+
+            // Hacer ceros en la columna actual de las demás filas
+            for (j in 0 until n) {
+                if (i != j) {
+                    val ratio = matrizAumentada[j][i]
+                    for (k in 0 until 2 * n) matrizAumentada[j][k] -= ratio * matrizAumentada[i][k]
+                    pasos.add(
+                        "F ${j + 1}  - ${"%.2f".format(ratio)} * F ${i + 1}:\n${formatearMatriz(matrizAumentada)}  \n"
+                    )
+                }
+            }
+        }
+
+        // Extraer la matriz inversa de la matriz aumentada
+        val matrizInversa = Array(n) { i -> Array(n) { j -> matrizAumentada[i][n + j] } }
+        pasos.add("Matriz aumentada final:\n${formatearMatriz(matrizAumentada)} \n")
+        pasos.add("Matriz inversa:\n${formatearMatriz(matrizInversa)} \n")
+        return matrizInversa
+    }
+
+    // Función para formatear matrices con bordes claros y legibles
+    private fun formatearMatriz(matriz: Array<Array<Double>>): String {
+        return matriz.joinToString("\n") { fila ->
+            fila.joinToString(" | ", prefix = "| ", postfix = " |") { "%.2f".format(it) }
+        }
+    }
+
 
     private fun formatMatrix(matrix: Array<Array<Int>>): String {
         return matrix.joinToString("\n") { row -> row.joinToString(", ") }
