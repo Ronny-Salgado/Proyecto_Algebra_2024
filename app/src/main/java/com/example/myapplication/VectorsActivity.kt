@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +13,9 @@ class VectorsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var vectorAdapter: VectorAdapter
+    private lateinit var tvResultado: TextView  // TextView para mostrar resultados detallados
     private val calculosVectores = CalculosVectoresActivity()
-    private val selectedIndices = mutableListOf<Int>() // GUARDARA INDICES SELECIONADOS
+    private val selectedIndices = mutableListOf<Int>() // Guarda los índices seleccionados
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +39,9 @@ class VectorsActivity : AppCompatActivity() {
         )
         recyclerView.adapter = vectorAdapter
 
+        // Configura el TextView para mostrar los resultados detallados
+        tvResultado = findViewById(R.id.tvResultado)
+
         // Configura el botón para agregar vectores
         val btnAddVector: Button = findViewById(R.id.btnAddVector)
         val etX: EditText = findViewById(R.id.etX)
@@ -59,7 +64,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
-        // Configura botones de operaciones
+        // Llama a la función para configurar los botones de operaciones
         setupOperationButtons()
     }
 
@@ -75,9 +80,7 @@ class VectorsActivity : AppCompatActivity() {
         val btnParalelo: Button = findViewById(R.id.btnParalelo)
         val btnPerpendicular: Button = findViewById(R.id.btnPerpendicular)
 
-
-
-
+        // Operación de suma de vectores
         btnSum.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.sumaVectores(selectedIndices[0], selectedIndices[1])
@@ -87,6 +90,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación de resta de vectores
         btnRest.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.restaVectores(selectedIndices[0], selectedIndices[1])
@@ -96,6 +100,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación de multiplicación punto a punto
         btnMultiply.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.multiplicacionPuntoAPunto(selectedIndices[0], selectedIndices[1])
@@ -105,6 +110,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación de producto punto
         btnPunto.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.productoPunto(selectedIndices[0], selectedIndices[1])
@@ -114,6 +120,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación de producto vectorial
         btnVectorial.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.productoVectorial(selectedIndices[0], selectedIndices[1])
@@ -123,6 +130,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación de cálculo de norma de un vector
         btnNorma.setOnClickListener {
             if (selectedIndices.size == 1) {
                 val result = calculosVectores.calcularNorma(selectedIndices[0])
@@ -132,6 +140,7 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación de cálculo de ángulo entre dos vectores
         btnAngulo.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.calcularAngulo(selectedIndices[0], selectedIndices[1])
@@ -141,24 +150,28 @@ class VectorsActivity : AppCompatActivity() {
             }
         }
 
+        // Operación para verificar si dos vectores son paralelos
         btnParalelo.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.sonParalelos(selectedIndices[0], selectedIndices[1])
-                showResult("¿Son Paralelos?", if (result) "Sí" else "No")
+                showResult("¿Son Paralelos?", result)
             } else {
                 Toast.makeText(this, "Selecciona exactamente 2 vectores.", Toast.LENGTH_SHORT).show()
             }
         }
 
+// Operación para verificar si dos vectores son perpendiculares
         btnPerpendicular.setOnClickListener {
             if (selectedIndices.size == 2) {
                 val result = calculosVectores.sonPerpendiculares(selectedIndices[0], selectedIndices[1])
-                showResult("¿Son Perpendiculares?", if (result) "Sí" else "No")
+                showResult("¿Son Perpendiculares?", result)
             } else {
                 Toast.makeText(this, "Selecciona exactamente 2 vectores.", Toast.LENGTH_SHORT).show()
             }
         }
 
+
+        // Operación para multiplicar un vector por un escalar
         btnEscalar.setOnClickListener {
             val etX: EditText = findViewById(R.id.campo) // Asegúrate de que "campo" sea el ID correcto
             val escalare = etX.text.toString().toIntOrNull()
@@ -176,38 +189,22 @@ class VectorsActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor, introduce valores válidos.", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-
-
-
-
-
-
-
-
-
     }
+
+    // Función para mostrar el resultado en el TextView con detalle
     private fun showResult(operation: String, result: Any?) {
         when (result) {
             is Vector -> {
-                Toast.makeText(this, "$operation: (${result.a}, ${result.b}, ${result.c})", Toast.LENGTH_LONG).show()
+                // Aquí puedes mostrar más detalles sobre el resultado
+                tvResultado.text = "$operation: Vector(${result.a}, ${result.b}, ${result.c})"
             }
             is String -> {
-                Toast.makeText(this, "$operation: $result", Toast.LENGTH_LONG).show()
+                tvResultado.text = "$operation: $result"
             }
             else -> {
-                Toast.makeText(this, "Error al realizar $operation.", Toast.LENGTH_SHORT).show()
+                tvResultado.text = "Error al realizar $operation."
             }
         }
     }
-
-
-
-
-
-
-
-
-
 }
+
