@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,10 +50,10 @@ class MainActivity : AppCompatActivity() {
 //        }
 //
 //        // Botón para resolver sistemas de ecuaciones
-//        val btnSolveEquations = findViewById<Button>(R.id.btnSolveEquations)
-//        btnSolveEquations.setOnClickListener {
-//            val intent = Intent(this, SolveEquationsActivity::class.java)
-//            startActivity(intent)
-//        }
+        val btnSolveEquations = findViewById<Button>(R.id.btnEcuaciones)
+        btnSolveEquations.setOnClickListener {
+            val intent = Intent(this, SEcuacionesActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
