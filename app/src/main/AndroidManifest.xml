@@ -27,6 +27,7 @@
         <!-- llamo la logica -->
 
         <activity android:name=".VectorsActivity" android:exported="true" />
+        <activity android:name=".RectasActivity" android:exported="true" />
 
     </application>
 

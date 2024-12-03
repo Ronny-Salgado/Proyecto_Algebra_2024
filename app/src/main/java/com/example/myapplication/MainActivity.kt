@@ -33,14 +33,14 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, VectorsActivity::class.java)
           startActivity(intent)
         }
-//
-//        // Botón para operaciones con rectas
-//        val btnLineOperations = findViewById<Button>(R.id.btnLineOperations)
-//        btnLineOperations.setOnClickListener {
-//            val intent = Intent(this, LineOperationsActivity::class.java)
-//            startActivity(intent)
-//        }
-//
-//
+
+        // Botón para operaciones con rectas
+        val btnLineOperations = findViewById<Button>(R.id.btnLineOperations)
+        btnLineOperations.setOnClickListener {
+            val intent = Intent(this, RectasActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
 }
