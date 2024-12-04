@@ -287,6 +287,8 @@
             android:padding="8dp"
             android:scrollbars="vertical"
             android:text="Resultado"
+            android:background="#EEEEEE"
+            android:textColor="@color/black"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </ScrollView>
 
