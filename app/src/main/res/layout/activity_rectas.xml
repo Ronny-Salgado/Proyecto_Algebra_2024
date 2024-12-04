@@ -5,79 +5,49 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Botones para seleccionar el tipo de recta -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnVectorial"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Vectorial" />
-
-        <Button
-            android:id="@+id/btnParametrica"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Paramétrica" />
-
-        <Button
-            android:id="@+id/btnSimetrica"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Simétrica" />
-    </LinearLayout>
-
-    <!-- Contenedor para EditText dinámicos -->
-    <LinearLayout
-        android:id="@+id/extraFieldsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="16dp">
-    </LinearLayout>
-
-    <!-- Botón para agregar recta -->
-    <Button
-        android:id="@+id/btnAgregar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Agregar Recta"
-        android:layout_marginTop="16dp" />
-
-    <!-- Botón para eliminar recta -->
-    <Button
-        android:id="@+id/btnEliminar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Eliminar Recta" />
-
-    <!-- Botón para consultar rectas -->
-    <Button
-        android:id="@+id/btnConsultar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Consultar Rectas" />
-
-    <!-- Botón para convertir recta -->
-    <Button
-        android:id="@+id/btnConvertir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Convertir Recta" />
-
-    <!-- TextView para mostrar resultados -->
+    <!-- Título de la aplicación -->
     <TextView
-        android:id="@+id/textViewResultado"
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Conversor de Rectas"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Ingreso de la ecuación de la recta -->
+    <TextView
+        android:id="@+id/etiquetaRecta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Introduce la recta (en cualquier notación):"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/entradaRecta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Resultado"
-        android:paddingTop="16dp"
-        android:scrollbars="vertical" />
+        android:hint="Ej:\n Vectorial: r: (1, 2, 3) + t(4, -2, 5)\n Parametrica : x = 1 + 4t, y = 2 - 5t, z = 3 + 6t\n Sitemtrica : (x - 4) / 3 = (y + 5) / 4 = (z - 6) / 5"
+        android:inputType="text"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Botones de conversión -->
+    <Button
+        android:id="@+id/botonConvertir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Convertir"
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"/>
+
+    <!-- Área de resultado -->
+    <TextView
+        android:id="@+id/resultado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Resultado de la conversión"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
 </LinearLayout>

@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
 //        // Botón para operaciones con vectores
         val btnVectorOperations = findViewById<Button>(R.id.btnVectorOperations)
         btnVectorOperations.setOnClickListener {
-        val intent = Intent(this, VectorsActivity::class.java)
-          startActivity(intent)
+            val intent = Intent(this, VectorsActivity::class.java)
+            startActivity(intent)
         }
 
         // Botón para operaciones con rectas

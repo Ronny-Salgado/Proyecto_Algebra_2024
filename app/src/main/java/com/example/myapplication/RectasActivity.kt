@@ -3,513 +3,167 @@ package com.example.myapplication
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class RectasActivity : AppCompatActivity() {
 
-    private val rectas = mutableListOf<Recta>()
-    private lateinit var extraFieldsContainer: LinearLayout
-    private lateinit var textViewResultado: TextView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rectas)
 
-        // Inicializar vistas
-        extraFieldsContainer = findViewById(R.id.extraFieldsContainer)
-        textViewResultado = findViewById(R.id.textViewResultado)
+        val entradaRecta: EditText = findViewById(R.id.entradaRecta)
+        val botonConvertir: Button = findViewById(R.id.botonConvertir)
+        val resultado: TextView = findViewById(R.id.resultado)
 
-        val btnVectorial: Button = findViewById(R.id.btnVectorial)
-        val btnParametrica: Button = findViewById(R.id.btnParametrica)
-        val btnSimetrica: Button = findViewById(R.id.btnSimetrica)
-        val btnAgregar: Button = findViewById(R.id.btnAgregar)
-        val btnEliminar: Button = findViewById(R.id.btnEliminar)
-        val btnConsultar: Button = findViewById(R.id.btnConsultar)
-        val btnConvertir: Button = findViewById(R.id.btnConvertir)
+        botonConvertir.setOnClickListener {
+            val recta = entradaRecta.text.toString().trim()
+            val formato = detectarFormato(recta)
 
-        // Botón "Paramétrica" - Añade campos dinámicos
-        btnParametrica.setOnClickListener {
-            extraFieldsContainer.removeAllViews()
-            val editTextX = createEditText("Ecuación para X (ej: x = 1 + 4t)")
-            val editTextY = createEditText("Ecuación para Y (ej: y = 2 + 5t)")
-            val editTextZ = createEditText("Ecuación para Z (ej: z = 3 + 6t)")
-            extraFieldsContainer.addView(editTextX)
-            extraFieldsContainer.addView(editTextY)
-            extraFieldsContainer.addView(editTextZ)
-        }
-
-        // Botón "Vectorial"
-        btnVectorial.setOnClickListener {
-            extraFieldsContainer.removeAllViews()
-            val editTextVectorial = createEditText("Introduce recta en formato vectorial (ej: r: (1,2,3) + t(4,5,6))")
-            extraFieldsContainer.addView(editTextVectorial)
-        }
-
-        // Botón "Simétrica"
-        btnSimetrica.setOnClickListener {
-            extraFieldsContainer.removeAllViews()
-            val editTextSimetrica = createEditText("Introduce recta en formato simétrico (ej: (x - 1)/4 = (y - 2)/5 = (z - 3)/6)")
-            extraFieldsContainer.addView(editTextSimetrica)
-        }
-
-        // Botón "Agregar"
-        btnAgregar.setOnClickListener {
-            val childCount = extraFieldsContainer.childCount
-            val inputs = mutableListOf<String>()
-
-            for (i in 0 until childCount) {
-                val editText = extraFieldsContainer.getChildAt(i) as? EditText
-                val inputText = editText?.text.toString()
-                if (inputText.isEmpty()) {
-                    mostrarResultado("Por favor, llena todos los campos.")
-                    return@setOnClickListener
-                }
-                inputs.add(inputText)
+            when (formato) {
+                "vectorial" -> resultado.text = convertirDeVectorial(recta)
+                "paramétrica" -> resultado.text = convertirDeParametrica(recta)
+                "simétrica" -> resultado.text = convertirDeSimetrica(recta)
+                else -> resultado.text = "Formato no reconocido. Por favor, introduce una recta válida."
             }
-
-            when (inputs.size) {
-                1 -> {
-                    val recta = Recta(vectorial = inputs[0], parametrica = null, simetrica = null)
-                    agregarRecta(recta)
-                }
-                3 -> {
-                    val parametrica = "x: ${inputs[0]}, y: ${inputs[1]}, z: ${inputs[2]}"
-                    val recta = Recta(vectorial = null, parametrica = parametrica, simetrica = null)
-                    agregarRecta(recta)
-                }
-                else -> mostrarResultado("Formato no válido.")
-            }
-
-            mostrarResultado("Recta agregada.")
-            extraFieldsContainer.removeAllViews()
         }
+    }
 
-        // Botón "Eliminar Recta"
-        btnEliminar.setOnClickListener {
-            if (rectas.isNotEmpty()) {
-                // Mostrar la lista de rectas con índices
-                val listaRectas = rectas.mapIndexed { index, recta -> "${index + 1}. ${recta}" }
-                    .joinToString(separator = "\n\n")
-                mostrarResultado("Rectas almacenadas:\n\n$listaRectas\n\nIntroduce el número de la recta que deseas eliminar:")
+    private fun detectarFormato(recta: String): String {
+        val vectorialRegex = """r:\s*\(([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+)\)\s*\+\s*t\(([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+)\)""".toRegex()
+        val parametricaRegex = """x\s*=\s*([-+]?\d+)\s*([+-]?)\s*(\d+)t,\s*y\s*=\s*([-+]?\d+)\s*([+-]?)\s*(\d+)t,\s*z\s*=\s*([-+]?\d+)\s*([+-]?)\s*(\d+)t""".toRegex()
+        val simetricaRegex = """\(\s*x\s*([+-]?\s*\d+)\)\s*/\s*([+-]?\s*\d+)\s*=\s*\(\s*y\s*([+-]?\s*\d+)\)\s*/\s*([+-]?\s*\d+)\s*=\s*\(\s*z\s*([+-]?\s*\d+)\)\s*/\s*([+-]?\s*\d+)""".toRegex()
 
-                // Crear un EditText para que el usuario ingrese el índice
-                val inputField = createEditText("Número de recta")
-                extraFieldsContainer.removeAllViews()
-                extraFieldsContainer.addView(inputField)
+        return when {
+            recta.matches(vectorialRegex) -> "vectorial"
+            recta.matches(parametricaRegex) -> "paramétrica"
+            recta.matches(simetricaRegex) -> "simétrica"
+            else -> "indefinido"
+        }
+    }
 
-                // Botón para confirmar la eliminación
-                val btnConfirmar = Button(this).apply {
-                    text = "Confirmar eliminación"
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                }
+    private fun convertirDeVectorial(vectorial: String): String {
+        val regex = """r:\s*\(([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+)\)\s*\+\s*t\(([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+),\s*([-+]?[0-9]*\.?[0-9]+)\)""".toRegex()
+        val match = regex.find(vectorial)
+        return if (match != null) {
+            val operacion = 0
+            val (x0, y0, z0, a, b, c) = match.destructured
 
-                extraFieldsContainer.addView(btnConfirmar)
+            var paso = "Paso 1: gualar a , y , z cada posición del punto \n" +
+                    "x = $x0 \ny = $y0 \nz = $z0 \n"
 
-                btnConfirmar.setOnClickListener {
-                    val inputText = inputField.text.toString()
-                    if (inputText.isNotEmpty()) {
-                        val indice = inputText.toIntOrNull()
-                        if (indice != null && indice in 1..rectas.size) {
-                            rectas.removeAt(indice - 1)
-                            mostrarResultado("Recta eliminada correctamente.\n\nRectas restantes:\n\n${rectas.joinToString("\n\n")}")
-                            extraFieldsContainer.removeAllViews()
-                        } else {
-                            mostrarResultado("Número inválido. Intenta de nuevo.")
-                        }
-                    } else {
-                        mostrarResultado("Por favor, introduce un número válido.")
-                    }
-                }
+            paso += "Paso 2: multiplicar t por cada posición del vector \n" +
+                    "<$a t, $b t, $c t> \n"
+
+            paso +=  "\nPaso 3: conctruimos las parametricas" +
+                    "x = $x0 + $a t \ny = $y0 + $b t \nz = $z0 + $c t \n"
+
+            val termX = invertirSigno(x0, operacion) + ""
+            val termY = invertirSigno(y0, operacion) + ""
+            val termZ = invertirSigno(z0, operacion) + ""
+
+            paso +=  "\nPaso 4: pasamos el numero al otro lado del = con su signo invertido\n" +
+                    "x $termX = $a t \ny $termY = $b t \nz $termZ = $c t \n"
+
+            paso +=  "\nPaso 5: pasamos los que multiplican a dividir al otro lado\n" +
+                    "(x $termX) / $a = t \n(y $termY) / $b = t \n(z $termZ) / $c = t \n"
+
+            paso +=  "\nPaso 6: construimos las simetricas\n" +
+                    "(x $termX) / $a = (y $termY) / $b = (z $termZ) / $c "
+
+            "$paso"
+        } else {
+            "Formato vectorial no válido."
+        }
+    }
+
+    private fun convertirDeParametrica(parametrica: String): String {
+        val regex = """x\s*=\s*([-+]?\d+)\s*([+-]?)\s*(\d+)t,\s*y\s*=\s*([-+]?\d+)\s*([+-]?)\s*(\d+)t,\s*z\s*=\s*([-+]?\d+)\s*([+-]?)\s*(\d+)t""".toRegex()
+        val match = regex.find(parametrica)
+        return if (match != null) {
+            val operacion = 0
+            val (x0, signoX, a, y0, signoY, b, z0, signoZ, c) = match.destructured
+
+            // Aquí eliminamos el signo "+" en los coeficientes positivos y mantenemos el negativo
+            val termX = if (signoX == "+") "$a" else "$signoX$a"
+            val termY = if (signoY == "+") "$b" else "$signoY$b"
+            val termZ = if (signoZ == "+") "$c" else "$signoZ$c"
+
+            var paso = "Paso 1: construir la vectorial, los numero solos son el punto los que multiplican a t el vector: \n" +
+                    "\nr: ($x0, $y0, $z0) + t<$termX, $termY, $termZ>\n"
+
+            val termXp = invertirSigno(x0, operacion) + ""
+            val termYp = invertirSigno(y0, operacion) + ""
+            val termZp = invertirSigno(z0, operacion) + ""
+
+            paso +=  "\nPaso 2: tomando las parametricas originales pasamos el numero al otro lado del = con su signo invertido\n" +
+                    "x $termXp = $a t \ny $termYp = $b t \nz $termZp = $c t \n"
+
+            paso +=  "\nPaso 3: pasamos los que multiplican a dividir al otro lado\n" +
+                    "(x $termXp) / $a = t \n(y $termYp) / $b = t \n(z $termZp) / $c = t \n"
+
+            paso +=  "\nPaso 4: construimos las simetricas\n" +
+                    "(x $termXp) / $a = (y $termYp) / $b = (z $termZp) / $c "
+
+            "$paso"
+        } else {
+            "Formato paramétrico no válido."
+        }
+    }
+
+    private fun convertirDeSimetrica(simetrica: String): String {
+        val regex = """\(\s*x\s*([+-]?\s*\d+)\)\s*/\s*([+-]?\s*\d+)\s*=\s*\(\s*y\s*([+-]?\s*\d+)\)\s*/\s*([+-]?\s*\d+)\s*=\s*\(\s*z\s*([+-]?\s*\d+)\)\s*/\s*([+-]?\s*\d+)""".toRegex()
+        val match = regex.find(simetrica)
+
+        return if (match != null) {
+            val operacion = 1
+            val (x0, a, y0, b, z0, c) = match.destructured
+
+            var paso = "Paso 1: Igualamos a t:\n" +
+                    " (x $x0) / $a = t\n (y $y0) / $b = t\n (z $z0) / $c = t\n"
+
+            paso += "\nPaso 2: enviamos los divisores al otro lado del = a multiplicar t:\n" +
+                    "  x $x0 = $a t\n  y $y0 = $b t\n  z $z0 = $c t\n"
+
+            val termX = invertirSigno(x0, operacion) + " +  $a t"
+            val termY = invertirSigno(y0, operacion) + " +  $b t"
+            val termZ = invertirSigno(z0, operacion) + " +  $c t"
+            paso += "\nPaso 3: Enviamos los numero al otro lado con su signo invertido:\n" +
+                    "x = $termX\ny = $termY\nz = $termZ \n"
+
+            val termXv = invertirSigno(x0, operacion) + ""
+            val termYv = invertirSigno(y0, operacion) + ""
+            val termZv = invertirSigno(z0, operacion) + ""
+            paso += "\nPaso 3: Creamos la ecuación vectorial los nuemros solos seran el punto, los que multiplican a t seran el vector:\n" +
+                    "r: ($termXv, $termYv, $termZv) + t<$a, $b, $c>"
+
+
+            "$paso"
+        } else {
+            "Formato simétrico no válido."
+        }
+    }
+
+
+    private fun invertirSigno(valor: String, operacion: Int): String {
+        // Eliminamos cualquier signo (+ o -) al principio
+        val valorSinSigno = valor.removePrefix("+").removePrefix("-")
+
+        return if (operacion == 0) {
+            // Si la operación es 0, invertimos el signo
+            if (valor.startsWith("-")) {
+                "+$valorSinSigno" // Elimina el signo negativo
             } else {
-                mostrarResultado("No hay rectas para eliminar.")
+                "-$valorSinSigno" // Agrega el signo negativo
             }
-        }
-
-
-        // Botón "Consultar Recta"
-        btnConsultar.setOnClickListener {
-            if (rectas.isNotEmpty()) {
-                val listaRectas = rectas.mapIndexed { index, recta -> "${index + 1}. ${recta}" }
-                    .joinToString(separator = "\n\n")
-                mostrarResultado("Rectas almacenadas:\n\n$listaRectas\n\n")
+        } else {
+            return if (valor.startsWith("-")) {
+                valorSinSigno // Elimina el signo negativo
             } else {
-                mostrarResultado("No hay rectas almacenadas.")
+                "-$valorSinSigno" // Agrega el signo negativo
             }
         }
-
-
-        // Botón "Convertir Recta"
-        btnConvertir.setOnClickListener {
-            if (rectas.isEmpty()) {
-                mostrarResultado("No hay rectas para convertir.")
-                return@setOnClickListener
-            }
-
-            // Mostrar la lista de rectas con índices
-            val listaRectas = rectas.mapIndexed { index, recta -> "${index + 1}. ${recta}" }
-                .joinToString(separator = "\n\n")
-            mostrarResultado("Rectas almacenadas:\n\n$listaRectas\n\nIntroduce el número de la recta que deseas convertir:")
-
-            // Crear un EditText para que el usuario ingrese el índice
-            val inputField = createEditText("Número de recta")
-            extraFieldsContainer.removeAllViews()
-            extraFieldsContainer.addView(inputField)
-
-            // Botón para confirmar selección de recta
-            val btnSeleccionarRecta = Button(this).apply {
-                text = "Seleccionar Recta"
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-            }
-
-            extraFieldsContainer.addView(btnSeleccionarRecta)
-
-            btnSeleccionarRecta.setOnClickListener {
-                val inputText = inputField.text.toString()
-                val indice = inputText.toIntOrNull()
-                if (indice != null && indice in 1..rectas.size) {
-                    val rectaSeleccionada = rectas[indice - 1]
-
-                    mostrarResultado("Seleccionaste la recta:\n\n${rectaSeleccionada}\n\nSelecciona a qué notación deseas convertir:")
-                    extraFieldsContainer.removeAllViews()
-
-                    // Botones para seleccionar la notación a convertir
-                    val btnVectorialConvert = Button(this).apply {
-                        text = "Convertir a Vectorial"
-                        layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        )
-                    }
-
-                    val btnParametricaConvert = Button(this).apply {
-                        text = "Convertir a Paramétrica"
-                        layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        )
-                    }
-
-                    val btnSimetricaConvert = Button(this).apply {
-                        text = "Convertir a Simétrica"
-                        layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        )
-                    }
-
-                    // Agregar botones al contenedor
-                    extraFieldsContainer.addView(btnVectorialConvert)
-                    extraFieldsContainer.addView(btnParametricaConvert)
-                    extraFieldsContainer.addView(btnSimetricaConvert)
-
-                    // Funcionalidad para cada conversión
-                    btnVectorialConvert.setOnClickListener {
-                        val resultado = convertirARecta("vectorial", rectaSeleccionada)
-                        mostrarResultado("Resultado de la conversión:\n\n$resultado")
-                        extraFieldsContainer.removeAllViews()
-                    }
-
-                    btnParametricaConvert.setOnClickListener {
-                        val resultado = convertirARecta("paramétrica", rectaSeleccionada)
-                        mostrarResultado("Resultado de la conversión:\n\n$resultado")
-                        extraFieldsContainer.removeAllViews()
-                    }
-
-                    btnSimetricaConvert.setOnClickListener {
-                        val resultado = convertirARecta("simétrica", rectaSeleccionada)
-                        mostrarResultado("Resultado de la conversión:\n\n$resultado")
-                        extraFieldsContainer.removeAllViews()
-                    }
-                } else {
-                    mostrarResultado("Número inválido. Intenta de nuevo.")
-                }
-            }
-        }
-
     }
 
 
-    private fun convertirARecta(tipo: String, recta: Recta): String {
-        return when (tipo) {
-            "vectorial" -> {
-                if (!recta.vectorial.isNullOrEmpty()) {
-                    "Ya está en notación vectorial."
-                } else if (!recta.parametrica.isNullOrEmpty()) {
-                    parametricaAVectorialPasos(recta.parametrica)
-                } else if (!recta.simetrica.isNullOrEmpty()) {
-                    SimetricaAVectorialPasos(recta.simetrica)
-                } else {
-                    "No se puede convertir esta recta."
-                }
-            }
-
-            "paramétrica" -> {
-                if (!recta.parametrica.isNullOrEmpty()) {
-                    "Ya está en notación paramétrica."
-                } else if (!recta.vectorial.isNullOrEmpty()) {
-                    vectorialAParametricaPasos(recta.vectorial)
-                } else if (!recta.simetrica.isNullOrEmpty()) {
-                    simetricaAParametricaPasos(recta.simetrica)
-                } else {
-                    "No se puede convertir esta recta."
-                }
-            }
-
-            "simétrica" -> {
-                if (!recta.simetrica.isNullOrEmpty()) {
-                    "Ya está en notación simétrica."
-                } else if (!recta.vectorial.isNullOrEmpty()) {
-                    vectorialASimetricaPasos(recta.vectorial)
-                } else if (!recta.parametrica.isNullOrEmpty()) {
-                    parametricaASimetricaPasos(recta.parametrica)
-                } else {
-                    "No se puede convertir esta recta."
-                }
-            }
-
-            else -> "Tipo de conversión no válido."
-        }
-    }
-
-
-    private fun vectorialAParametricaPasos(vectorial: String): String {
-        return try {
-            val pasos = StringBuilder()
-            pasos.append("=== Conversión de Notación Vectorial a Paramétrica ===\n")
-
-            // Paso 1: Separar el punto inicial y el vector de dirección
-            pasos.append("Paso 1: Separar el punto inicial y el vector de dirección.\n")
-            val parts = vectorial.split("+ t(")
-            val puntoInicial = parts[0].replace("r: ", "").replace("(", "").replace(")", "").trim()
-            val direccion = parts[1].replace(")", "").trim()
-            pasos.append("Punto inicial: $puntoInicial\n")
-            pasos.append("Vector de dirección: $direccion\n")
-
-            // Paso 2: Dividir los componentes del punto inicial y del vector de dirección
-            pasos.append("Paso 2: Dividir los componentes del punto inicial y del vector de dirección.\n")
-            val p = puntoInicial.split(",")
-            val d = direccion.split(",")
-            pasos.append("Componentes del punto inicial: x0=${p[0]}, y0=${p[1]}, z0=${p[2]}\n")
-            pasos.append("Componentes del vector de dirección: a=${d[0]}, b=${d[1]}, c=${d[2]}\n")
-
-            // Paso 3: Construir la ecuación paramétrica
-            pasos.append("Paso 3: Construir la ecuación paramétrica.\n")
-            pasos.append("Resultado:\n")
-            pasos.append("x = ${p[0]} + ${d[0]}t\n")
-            pasos.append("y = ${p[1]} + ${d[1]}t\n")
-            pasos.append("z = ${p[2]} + ${d[2]}t\n")
-
-            pasos.toString()
-        } catch (e: Exception) {
-            "Error en el formato de entrada para la notación vectorial."
-        }
-    }
-
-    private fun vectorialASimetricaPasos(vectorial: String): String {
-        return try {
-            val pasos = StringBuilder()
-            pasos.append("=== Conversión de Notación Vectorial a Simétrica ===\n")
-
-            // Paso 1: Separar el punto inicial y el vector de dirección
-            pasos.append("Paso 1: Separar el punto inicial y el vector de dirección.\n")
-            val parts = vectorial.split("+ t(")
-            val puntoInicial = parts[0].replace("r: ", "").replace("(", "").replace(")", "").trim()
-            val direccion = parts[1].replace(")", "").trim()
-            pasos.append("Punto inicial: $puntoInicial\n")
-            pasos.append("Vector de dirección: $direccion\n")
-
-            // Paso 2: Dividir los componentes del punto inicial y del vector de dirección
-            pasos.append("Paso 2: Dividir los componentes del punto inicial y del vector de dirección.\n")
-            val p = puntoInicial.split(",")
-            val d = direccion.split(",")
-            pasos.append("Componentes del punto inicial: x0=${p[0]}, y0=${p[1]}, z0=${p[2]}\n")
-            pasos.append("Componentes del vector de dirección: a=${d[0]}, b=${d[1]}, c=${d[2]}\n")
-
-            // Paso 3: Construir la ecuación simétrica
-            pasos.append("Paso 3: Construir la ecuación simétrica.\n")
-            pasos.append("Resultado:\n")
-            pasos.append("(x - ${p[0]}) / ${d[0]} = ")
-            pasos.append("(y - ${p[1]}) / ${d[1]} = ")
-            pasos.append("(z - ${p[2]}) / ${d[2]}\n")
-
-            pasos.toString()
-        } catch (e: Exception) {
-            "Error en el formato de entrada para la notación vectorial."
-        }
-    }
-
-    private fun parametricaAVectorialPasos(parametrica: String): String {
-        return try {
-            val pasos = StringBuilder()
-            pasos.append("=== Conversión de Notación Paramétrica a Vectorial ===\n")
-
-            // Paso 1: Separar las ecuaciones de cada coordenada
-            pasos.append("Paso 1: Separar las ecuaciones de cada coordenada.\n")
-            val lines = parametrica.split("\n")
-            val xLine = lines[0].replace("x = ", "").trim()
-            val yLine = lines[1].replace("y = ", "").trim()
-            val zLine = lines[2].replace("z = ", "").trim()
-            pasos.append("Ecuación x: $xLine\n")
-            pasos.append("Ecuación y: $yLine\n")
-            pasos.append("Ecuación z: $zLine\n")
-
-            // Paso 2: Extraer el punto inicial y el vector de dirección
-            pasos.append("Paso 2: Extraer el punto inicial y el vector de dirección.\n")
-            val xParts = xLine.split("+")
-            val yParts = yLine.split("+")
-            val zParts = zLine.split("+")
-
-            val puntoInicial = "(${xParts[0].trim()}, ${yParts[0].trim()}, ${zParts[0].trim()})"
-            val direccion = "(${xParts[1].replace("t", "").trim()}, ${yParts[1].replace("t", "").trim()}, ${zParts[1].replace("t", "").trim()})"
-            pasos.append("Punto inicial: $puntoInicial\n")
-            pasos.append("Vector de dirección: $direccion\n")
-
-            // Paso 3: Construir la notación vectorial
-            pasos.append("Paso 3: Construir la notación vectorial.\n")
-            pasos.append("Resultado:\n")
-            pasos.append("r: $puntoInicial + t$direccion\n")
-
-            pasos.toString()
-        } catch (e: Exception) {
-            "Error en el formato de entrada para la notación paramétrica."
-        }
-    }
-
-    private fun parametricaASimetricaPasos(parametrica: String): String {
-        return try {
-            val pasos = StringBuilder()
-            pasos.append("=== Conversión de Notación Paramétrica a Simétrica ===\n")
-
-            // Paso 1: Separar las ecuaciones de cada coordenada
-            pasos.append("Paso 1: Separar las ecuaciones de cada coordenada.\n")
-            val lines = parametrica.split("\n")
-            val xLine = lines[0].replace("x = ", "").trim()
-            val yLine = lines[1].replace("y = ", "").trim()
-            val zLine = lines[2].replace("z = ", "").trim()
-            pasos.append("Ecuación x: $xLine\n")
-            pasos.append("Ecuación y: $yLine\n")
-            pasos.append("Ecuación z: $zLine\n")
-
-            // Paso 2: Extraer el punto inicial y el vector de dirección
-            pasos.append("Paso 2: Extraer el punto inicial y el vector de dirección.\n")
-            val xParts = xLine.split("+")
-            val yParts = yLine.split("+")
-            val zParts = zLine.split("+")
-
-            val x0 = xParts[0].trim()
-            val y0 = yParts[0].trim()
-            val z0 = zParts[0].trim()
-            val a = xParts[1].replace("t", "").trim()
-            val b = yParts[1].replace("t", "").trim()
-            val c = zParts[1].replace("t", "").trim()
-
-            pasos.append("Punto inicial: x0=$x0, y0=$y0, z0=$z0\n")
-            pasos.append("Vector de dirección: a=$a, b=$b, c=$c\n")
-
-            // Paso 3: Construir la ecuación simétrica
-            pasos.append("Paso 3: Construir la ecuación simétrica.\n")
-            pasos.append("Resultado:\n")
-            pasos.append("(x - $x0) / $a = ")
-            pasos.append("(y - $y0) / $b = ")
-            pasos.append("(z - $z0) / $c\n")
-
-            pasos.toString()
-        } catch (e: Exception) {
-            "Error en el formato de entrada para la notación paramétrica."
-        }
-    }
-
-    private fun simetricaAParametricaPasos(simetrica: String): String {
-        return try {
-            val pasos = StringBuilder()
-            pasos.append("=== Conversión de Notación Simétrica a Paramétrica ===\n")
-
-            // Paso 1: Convertir a notación vectorial
-            pasos.append("Paso 1: Convertir a notación vectorial.\n")
-            val vectorial = SimetricaAVectorialPasos(simetrica)
-            pasos.append(vectorial).append("\n")
-
-            // Paso 2: Convertir de vectorial a paramétrica
-            pasos.append("Paso 2: Convertir de notación vectorial a paramétrica.\n")
-            val parametrica = vectorialAParametricaPasos(vectorial)
-            pasos.append(parametrica)
-
-            pasos.toString()
-        } catch (e: Exception) {
-            "Error al convertir de simétrica a paramétrica."
-        }
-    }
-
-
-    private fun SimetricaAVectorialPasos(simetrica: String): String {
-        return try {
-            val pasos = StringBuilder()
-            pasos.append("=== Conversión de Notación Simétrica a Vectorial ===\n")
-
-            // Paso 1: Separar las partes de la ecuación simétrica
-            pasos.append("Paso 1: Separar las partes de la ecuación simétrica.\n")
-            val parts = simetrica.split("=")
-            val xPart = parts[0].replace("(x - ", "").replace(")", "").trim()
-            val yPart = parts[1].replace("(y - ", "").replace(")", "").trim()
-            val zPart = parts[2].replace("(z - ", "").replace(")", "").trim()
-            pasos.append("Parte x: $xPart\n")
-            pasos.append("Parte y: $yPart\n")
-            pasos.append("Parte z: $zPart\n")
-
-            // Paso 2: Extraer el punto inicial y el vector de dirección
-            pasos.append("Paso 2: Extraer el punto inicial y el vector de dirección.\n")
-            val xParts = xPart.split("/")
-            val yParts = yPart.split("/")
-            val zParts = zPart.split("/")
-
-            val x0 = xParts[0].trim()
-            val y0 = yParts[0].trim()
-            val z0 = zParts[0].trim()
-            val a = xParts[1].trim()
-            val b = yParts[1].trim()
-            val c = zParts[1].trim()
-
-            pasos.append("Punto inicial: x0=$x0, y0=$y0, z0=$z0\n")
-            pasos.append("Vector de dirección: a=$a, b=$b, c=$c\n")
-
-            // Paso 3: Construir la notación vectorial
-            pasos.append("Paso 3: Construir la notación vectorial.\n")
-            val puntoInicial = "($x0, $y0, $z0)"
-            val direccion = "($a, $b, $c)"
-            pasos.append("Resultado:\n")
-            pasos.append("r: $puntoInicial + t$direccion\n")
-
-            pasos.toString()
-        } catch (e: Exception) {
-            "Error en el formato de entrada para la notación simétrica."
-        }
-    }
-
-
-
-    private fun createEditText(hint: String): EditText {
-        return EditText(this).apply {
-            this.hint = hint
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-    }
-
-    private fun agregarRecta(recta: Recta) {
-        rectas.add(recta)
-    }
-
-    private fun mostrarResultado(resultado: String) {
-        textViewResultado.text = resultado
-    }
 }
