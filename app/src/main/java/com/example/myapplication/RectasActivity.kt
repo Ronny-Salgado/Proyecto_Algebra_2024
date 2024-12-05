@@ -55,7 +55,7 @@ class RectasActivity : AppCompatActivity() {
             paso += "Paso 2: multiplicar t por cada posición del vector \n" +
                     "<$a t, $b t, $c t> \n"
 
-            paso +=  "\nPaso 3: conctruimos las parametricas" +
+            paso +=  "\nPaso 3: conctruimos las parametricas\n" +
                     "x = $x0 + $a t \ny = $y0 + $b t \nz = $z0 + $c t \n"
 
             val termX = invertirSigno(x0, operacion) + ""
